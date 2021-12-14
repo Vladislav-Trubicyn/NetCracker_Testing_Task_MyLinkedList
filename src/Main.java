@@ -1,5 +1,7 @@
+import java.sql.SQLOutput;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class Main
 {
@@ -49,12 +51,14 @@ public class Main
         System.out.println("Выводим список ...");
         System.out.println(myString);
 
-        System.out.println("Вставим элемент со значение А первым по списку (метод add(int index = 2, 'А'))");
+        System.out.println("Вставим элемент со значение А вторым по списку (метод add(int index = 2, 'А'))");
         myString.add(2, "А");
+
+        System.out.println("Проверка на совпадение элементов (метод equals())");
+        System.out.println("Равен ли элемент А единице: " + myString.get(3).equals(1));
 
         System.out.println("Выводим список ...");
         System.out.println(myString);
-
 
     }
 
@@ -71,28 +75,24 @@ public class Main
             this.size = 0;
         }
 
-        //Возвращение размера списка
         @Override
         public int size()
         {
             return size;
         }
 
-        //Возвращает true, если список пуст иначе false
         @Override
         public boolean isEmpty()
         {
             return size() == 0;
         }
 
-        //Присутствует ли подстроки в строке
         @Override
         public boolean contains(Object o)
         {
             return indexOf(o) >= 1;
         }
 
-        //Добавляет объект в конец списка
         @Override
         public boolean add(E e)
         {
@@ -113,7 +113,6 @@ public class Main
             return true;
         }
 
-        //Удаляет выбранный элемент
         @Override
         public boolean remove(E o)
         {
@@ -163,7 +162,6 @@ public class Main
             return result;
         }
 
-        //Получаем указанный элемент по его номеру
         @Override
         public E get(int index)
         {
@@ -198,7 +196,6 @@ public class Main
             return element;
         }
 
-        //Заменяем элемент в указанной позиции на новый
         @Override
         public E set(int index, E element)
         {
@@ -208,7 +205,6 @@ public class Main
             return oldVal;
         }
 
-        //Добавляет элемент псле определенного номера
         @Override
         public void add(int index, E element)
         {
@@ -241,7 +237,6 @@ public class Main
             }
         }
 
-        //Удаляет элемент по номеру
         @Override
         public E remove(int index)
         {
@@ -249,7 +244,23 @@ public class Main
             return null;
         }
 
-        //Находит номер элемента в списке
+        @Override
+        public boolean equals(Object o)
+        {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            MyLinkedListImpl<E> that = (MyLinkedListImpl<E>) o;
+            return size == that.size &&
+                    first.equals(that.first) &&
+                    last.equals(that.last);
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return Objects.hash(size, first, last);
+        }
+
         @Override
         public int indexOf(Object o)
         {
@@ -271,14 +282,12 @@ public class Main
             return result;
         }
 
-        //Реализация класса итератора для возможности прогонять элементы списка
         @Override
         public Iterator<E> myIterator()
         {
             return new LinkedListIterator();
         }
 
-        //Ядро итератора и его важные методы для прогона всех элементов
         private class LinkedListIterator implements Iterator<E>
         {
             private Element<E> next = first;
@@ -308,7 +317,6 @@ public class Main
 
         }
 
-        //Вывод всех элементов в списке
         @Override
         public String toString()
         {
@@ -332,7 +340,6 @@ public class Main
             return sb.toString();
         }
 
-        //Подкласс элемента предыдущего и следующего
         private static class Element<E>
         {
             private E item;
